@@ -1,0 +1,11 @@
+.env
+/bin
+## ignore for dotnetcore
+
+/obj
+
+
+# .NET Core
+*.suo
+*.user
+*.userosscache

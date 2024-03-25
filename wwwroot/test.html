@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Stream</title>
+</head>
+<body>
+    <textarea id="text" cols="80">Hello</textarea>
+    <button onclick="startAudioStream()">Start Audio Stream</button>
+    <audio id="audio" controls></audio>
+
+    <script>
+function startAudioStream() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const text = document.getElementById('text').value;
+    fetch(`http://localhost:5032/api/speak?text=${encodeURIComponent(text)}`)
+        .then(response => response.arrayBuffer())
+        .then(data => {
+            audioContext.decodeAudioData(data, function (buffer) {
+                const source = audioContext.createBufferSource();
+                source.buffer = buffer;
+                source.connect(audioContext.destination);
+                source.start(0);
+            });
+        });
+}
+    </script>
+</body>
+</html>
